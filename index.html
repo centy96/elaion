@@ -26,6 +26,14 @@
     font-family:'Oswald',sans-serif;
     overflow-x:hidden;
     -webkit-font-smoothing:antialiased;
+    transition:background .7s ease;
+  }
+  /* elements that recolor on theme switch */
+  .stripes,.logo,.script,.bio,.eyebrow,.sub-it,.origin,.tin,.tin .cap,.tin .lbl,
+  .tin .lbl small,.band h2,.band h2 .o,.pill,.spec .num,.spec .cap,.marquee span,
+  .marquee span.o,.cta h3,.btn,nav .mark,nav .badge,.scrollcue,footer,.specs,.spec,.marquee{
+    transition:color .7s ease,background .7s ease,border-color .7s ease,
+      box-shadow .7s ease,text-shadow .7s ease,-webkit-text-stroke-color .7s ease;
   }
 
   /* ===== global vertical stripe texture ===== */
@@ -138,21 +146,38 @@
   /* ===== floating TIN ===== */
   .tin-wrap{display:flex;justify-content:center;margin:30px 0 10px;perspective:900px}
   .tin{
+    --t-bg:var(--darker);--t-stripe:var(--teal-dim);--t-cap:var(--teal);
+    --t-letter:var(--orange);--t-script:var(--teal);
     width:130px;height:220px;border-radius:10px 10px 6px 6px;position:relative;
-    background:var(--darker);
-    box-shadow:0 40px 60px -20px rgba(0,0,0,.6), inset 0 0 0 2px var(--teal-dim);
+    background:var(--t-bg);
+    box-shadow:0 40px 60px -20px rgba(0,0,0,.6), inset 0 0 0 2px var(--t-stripe);
     overflow:hidden;animation:floaty 5s ease-in-out infinite;
     transform-style:preserve-3d;
   }
   .tin::before{
     content:'';position:absolute;inset:0;
-    background:repeating-linear-gradient(90deg,transparent 0,transparent 12px,var(--teal-dim) 12px,var(--teal-dim) 18px);
+    background:repeating-linear-gradient(90deg,transparent 0,transparent 12px,var(--t-stripe) 12px,var(--t-stripe) 18px);
     opacity:.5;
   }
-  .tin .cap{position:absolute;top:0;left:50%;transform:translateX(-50%);width:46px;height:14px;background:var(--teal);border-radius:0 0 6px 6px}
-  .tin .lbl{position:absolute;top:48%;left:50%;transform:translate(-50%,-50%);font-family:'Bricolage Grotesque';font-weight:800;color:var(--orange);font-size:22px;letter-spacing:.05em;-webkit-text-stroke:1.4px var(--darker);paint-order:stroke fill}
-  .tin .lbl small{display:block;font-family:'Cormorant Garamond';font-style:italic;font-weight:600;color:var(--teal);font-size:11px;-webkit-text-stroke:0;margin-top:4px;letter-spacing:0}
+  .tin .cap{position:absolute;top:0;left:50%;transform:translateX(-50%);width:46px;height:14px;background:var(--t-cap);border-radius:0 0 6px 6px}
+  .tin .lbl{position:absolute;top:48%;left:50%;transform:translate(-50%,-50%);font-family:'Bricolage Grotesque';font-weight:800;color:var(--t-letter);font-size:22px;letter-spacing:.05em;-webkit-text-stroke:1.4px var(--darker);paint-order:stroke fill}
+  .tin .lbl small{display:block;font-family:'Cormorant Garamond';font-style:italic;font-weight:600;color:var(--t-script);font-size:11px;-webkit-text-stroke:0;margin-top:4px;letter-spacing:0}
   @keyframes floaty{0%,100%{transform:translateY(0) rotateY(-8deg)}50%{transform:translateY(-16px) rotateY(8deg)}}
+
+  /* ===== variant selector ===== */
+  .picker{display:flex;flex-direction:column;align-items:center;gap:26px;margin:30px 0 20px}
+  .picker .label{font-size:11px;letter-spacing:.34em;text-transform:uppercase;color:var(--teal-dim)}
+  .tins{display:flex;gap:34px;justify-content:center;flex-wrap:wrap}
+  .opt{background:none;border:none;cursor:pointer;padding:0;position:relative;
+    transform:scale(.82);opacity:.55;transition:transform .5s cubic-bezier(.2,.8,.2,1),opacity .5s ease}
+  .opt:hover{opacity:.85;transform:scale(.9)}
+  .opt.active{opacity:1;transform:scale(1)}
+  .opt.active::after{content:'';position:absolute;bottom:-16px;left:50%;transform:translateX(-50%);
+    width:34px;height:3px;border-radius:3px;background:var(--accent)}
+  .opt .name{margin-top:14px;font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--teal-dim)}
+  .opt.active .name{color:var(--teal)}
+  /* each option carries its own swatch colors via inline style vars */
+  .opt .tin{animation:floaty 5s ease-in-out infinite}
 
   /* ===== reveal-on-scroll ===== */
   .reveal{opacity:0;transform:translateY(50px);transition:opacity .9s ease,transform .9s cubic-bezier(.2,.8,.2,1)}
@@ -177,6 +202,52 @@
   .spec:hover{background:var(--darker)}
   .spec .num{font-family:'Bricolage Grotesque';font-weight:800;font-size:46px;color:var(--orange);line-height:1}
   .spec .cap{margin-top:14px;font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--teal)}
+
+  /* ===== tasting card (wine-spectator style) ===== */
+  .tasting{max-width:1100px;margin:120px auto;padding:0 8vw;
+    display:grid;grid-template-columns:1fr 1fr;gap:0;align-items:stretch}
+  .tasting .visual{position:relative;min-height:440px;overflow:hidden;
+    border:1px solid var(--teal-dim)}
+  .tasting .visual .scene{position:absolute;inset:0;
+    background:linear-gradient(160deg,var(--darker),var(--dark));
+    filter:saturate(.4);opacity:.9}
+  /* faux landscape rows in seppia-teal */
+  .tasting .visual .scene::before{content:'';position:absolute;inset:0;
+    background:repeating-linear-gradient(115deg,transparent 0,transparent 26px,rgba(0,0,0,.25) 26px,rgba(0,0,0,.25) 52px);
+    opacity:.5}
+  .tasting .visual .grain{position:absolute;inset:0;
+    background:repeating-linear-gradient(90deg,transparent 0,transparent 12px,var(--teal-dim) 12px,var(--teal-dim) 18px);
+    opacity:.12;mix-blend-mode:overlay}
+  /* the floating bottle/tin inside the visual */
+  .tasting .bottle{position:absolute;right:8%;top:50%;transform:translateY(-50%);
+    width:96px;height:230px;border-radius:8px 8px 5px 5px;
+    background:var(--bottle-bg,var(--darker));
+    box-shadow:0 30px 50px -18px rgba(0,0,0,.7),inset 0 0 0 2px var(--bottle-stripe,var(--teal-dim));
+    animation:floaty 5.5s ease-in-out infinite;overflow:hidden}
+  .tasting .bottle::before{content:'';position:absolute;inset:0;
+    background:repeating-linear-gradient(90deg,transparent 0,transparent 10px,var(--bottle-stripe,var(--teal-dim)) 10px,var(--bottle-stripe,var(--teal-dim)) 15px);opacity:.45}
+  .tasting .bottle .b-cap{position:absolute;top:0;left:50%;transform:translateX(-50%);width:34px;height:12px;background:var(--bottle-cap,var(--teal));border-radius:0 0 5px 5px}
+  .tasting .bottle .b-lbl{position:absolute;top:46%;left:50%;transform:translate(-50%,-50%);font-family:'Bricolage Grotesque';font-weight:800;font-size:15px;color:var(--bottle-letter,var(--orange));-webkit-text-stroke:1px var(--darker);paint-order:stroke fill;text-align:center;width:100%}
+  .tasting .bottle .b-lbl small{display:block;font-family:'Cormorant Garamond';font-style:italic;font-weight:600;font-size:9px;color:var(--bottle-script,var(--teal));-webkit-text-stroke:0;margin-top:3px}
+
+  .tasting .review{padding:46px 0 46px 54px;display:flex;flex-direction:column;justify-content:center}
+  .tasting .score-row{display:flex;align-items:flex-start;gap:20px;margin-bottom:18px}
+  .tasting .score-lab{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:15px;color:var(--teal-dim);text-decoration:underline;margin-bottom:2px}
+  .tasting .score{font-family:'Bricolage Grotesque';font-weight:800;font-size:84px;line-height:.8;color:var(--orange);-webkit-text-stroke:2px var(--darker);paint-order:stroke fill}
+  .tasting .cru{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:26px;color:var(--teal);line-height:1.05;padding-top:6px}
+  .tasting .cru .yr{display:block;font-style:italic;font-size:14px;color:var(--teal-dim);margin-top:4px}
+  .tasting .pub{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(30px,4vw,48px);color:var(--orange);margin:6px 0 22px;line-height:.95}
+  .tasting .quote{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:17px;line-height:1.7;color:var(--cream);max-width:440px}
+  .tasting .sign{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:15px;color:var(--teal-dim);margin-top:16px}
+  /* fade between card contents */
+  .tasting .review,.tasting .bottle{transition:opacity .45s ease}
+  .tasting.swapping .review,.tasting.swapping .bottle{opacity:0}
+
+  @media(max-width:760px){
+    .tasting{grid-template-columns:1fr}
+    .tasting .visual{min-height:320px}
+    .tasting .review{padding:40px 0 0}
+  }
 
   /* ===== marquee ===== */
   .marquee{overflow:hidden;white-space:nowrap;border-top:1px solid var(--teal-dim);border-bottom:1px solid var(--teal-dim);padding:24px 0;margin:120px 0}
@@ -217,12 +288,58 @@
   <div class="scrollcue">Scorri</div>
 </section>
 
-<div class="tin-wrap">
-  <div class="tin">
-    <div class="cap"></div>
-    <div class="lbl">ELAION<small>extra vergine</small></div>
+<section class="picker">
+  <div class="label">Scegli la tua latta</div>
+  <div class="tins">
+    <button class="opt active" data-theme="teal" style="--accent:#34cabf">
+      <div class="tin" style="--t-bg:#0a2424;--t-stripe:#1f8a83;--t-cap:#34cabf;--t-letter:#e8821e;--t-script:#34cabf">
+        <div class="cap"></div>
+        <div class="lbl">ELAION<small>classico</small></div>
+      </div>
+      <div class="name">Classico</div>
+    </button>
+    <button class="opt" data-theme="yellow" style="--accent:#f2c230">
+      <div class="tin" style="--t-bg:#2e2410;--t-stripe:#8a7320;--t-cap:#f2c230;--t-letter:#1a5e3a;--t-script:#f2c230">
+        <div class="cap"></div>
+        <div class="lbl">ELAION<small>bergamotto</small></div>
+      </div>
+      <div class="name">Bergamotto</div>
+    </button>
+    <button class="opt" data-theme="pink" style="--accent:#e87fa6">
+      <div class="tin" style="--t-bg:#2e1320;--t-stripe:#9c4569;--t-cap:#e87fa6;--t-letter:#f4e3c1;--t-script:#e87fa6">
+        <div class="cap"></div>
+        <div class="lbl">ELAION<small>peperoncino</small></div>
+      </div>
+      <div class="name">Peperoncino</div>
+    </button>
   </div>
-</div>
+</section>
+
+<section class="tasting reveal" id="tasting">
+  <div class="visual">
+    <div class="scene"></div>
+    <div class="grain"></div>
+    <div class="bottle" id="tBottle">
+      <div class="b-cap"></div>
+      <div class="b-lbl">ELAION<small id="tBottleSub">classico</small></div>
+    </div>
+  </div>
+  <div class="review">
+    <div class="score-row">
+      <div>
+        <div class="score-lab">Punteggio:</div>
+        <div class="score" id="tScore">94</div>
+      </div>
+      <div class="cru">
+        <span id="tCru">Coratina<br>Monocultivar</span>
+        <span class="yr" id="tYear">Raccolto 2025</span>
+      </div>
+    </div>
+    <div class="pub" id="tPub">Guida Olei</div>
+    <p class="quote" id="tQuote">"Oro verde brillante, naso netto di carciofo ed erba falciata. In bocca pulito e bilanciato, con amaro elegante e finale lungo. Distintivo."</p>
+    <div class="sign" id="tSign">— La Redazione</div>
+  </div>
+</section>
 
 <section class="band reveal">
   <span class="pill">La Latta</span>
@@ -267,12 +384,83 @@
   },{threshold:.18});
   document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
-  // subtle parallax on tin
-  const tin=document.querySelector('.tin');
-  window.addEventListener('scroll',()=>{
-    const y=window.scrollY;
-    if(tin)tin.style.transform=`translateY(${y*-0.04}px)`;
+  // ===== theme switcher =====
+  const THEMES={
+    teal:  {dark:'#0e2e2e',darker:'#0a2424',teal:'#34cabf',tealDim:'#1f8a83',orange:'#e8821e',orangeDeep:'#c9690f',cream:'#eef2ec'},
+    yellow:{dark:'#2b2410',darker:'#1f1a0a',teal:'#f2c230',tealDim:'#8a7320',orange:'#1f7a4a',orangeDeep:'#155234',cream:'#fbf4dd'},
+    pink:  {dark:'#2e1320',darker:'#220d18',teal:'#e87fa6',tealDim:'#9c4569',orange:'#f4d35e',orangeDeep:'#caa83a',cream:'#fbe9f1'}
+  };
+  function applyTheme(name){
+    const t=THEMES[name];if(!t)return;
+    const r=document.documentElement.style;
+    r.setProperty('--dark',t.dark);
+    r.setProperty('--darker',t.darker);
+    r.setProperty('--teal',t.teal);
+    r.setProperty('--teal-dim',t.tealDim);
+    r.setProperty('--orange',t.orange);
+    r.setProperty('--orange-deep',t.orangeDeep);
+    r.setProperty('--cream',t.cream);
+  }
+
+  // ===== tasting card content per aroma =====
+  const CARDS={
+    teal:{
+      score:'94', cru:'Coratina<br>Monocultivar', year:'Raccolto 2025',
+      pub:'Guida Olei',
+      quote:'"Oro verde brillante, naso netto di carciofo ed erba falciata. In bocca pulito e bilanciato, con amaro elegante e finale lungo e pepato. Distintivo."',
+      sign:'— La Redazione',
+      sub:'classico',
+      bottle:{bg:'#0a2424',stripe:'#1f8a83',cap:'#34cabf',letter:'#e8821e',script:'#34cabf'}
+    },
+    yellow:{
+      score:'92', cru:'Aromatizzato<br>al Bergamotto', year:'Edizione 2025',
+      pub:'Gambero d\u2019Olio',
+      quote:'"Il bergamotto di Reggio dona slancio agrumato e fiori d\u2019arancio. Olio teso e luminoso, perfetto a crudo su pesce e carpacci. Sorprendente freschezza."',
+      sign:'— G.M.',
+      sub:'bergamotto',
+      bottle:{bg:'#2e2410',stripe:'#8a7320',cap:'#f2c230',letter:'#1a5e3a',script:'#f2c230'}
+    },
+    pink:{
+      score:'90', cru:'Aromatizzato<br>al Peperoncino', year:'Edizione 2025',
+      pub:'Olio &amp; Spirito',
+      quote:'"Il peperoncino calabrese scalda senza coprire. Naso fruttato, bocca avvolgente con coda piccante crescente. Ideale su bruschette e zuppe di legumi."',
+      sign:'— R.C.',
+      sub:'peperoncino',
+      bottle:{bg:'#2e1320',stripe:'#9c4569',cap:'#e87fa6',letter:'#f4e3c1',script:'#e87fa6'}
+    }
+  };
+  const cardEl=document.getElementById('tasting');
+  function applyCard(name){
+    const c=CARDS[name];if(!c)return;
+    cardEl.classList.add('swapping');
+    setTimeout(()=>{
+      document.getElementById('tScore').textContent=c.score;
+      document.getElementById('tCru').innerHTML=c.cru;
+      document.getElementById('tYear').textContent=c.year;
+      document.getElementById('tPub').innerHTML=c.pub;
+      document.getElementById('tQuote').textContent=c.quote;
+      document.getElementById('tSign').textContent=c.sign;
+      document.getElementById('tBottleSub').textContent=c.sub;
+      const b=document.getElementById('tBottle').style;
+      b.setProperty('--bottle-bg',c.bottle.bg);
+      b.setProperty('--bottle-stripe',c.bottle.stripe);
+      b.setProperty('--bottle-cap',c.bottle.cap);
+      b.setProperty('--bottle-letter',c.bottle.letter);
+      b.setProperty('--bottle-script',c.bottle.script);
+      cardEl.classList.remove('swapping');
+    },450);
+  }
+
+  document.querySelectorAll('.opt').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      document.querySelectorAll('.opt').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      applyTheme(btn.dataset.theme);
+      applyCard(btn.dataset.theme);
+    });
   });
+  // initialise bottle colors for default variant
+  applyCard('teal');
 </script>
 </body>
 </html>
