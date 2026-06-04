@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ELAION — Olio Extra Vergine d'Oliva</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&family=Cormorant+Garamond:ital,wght@1,500;1,600&family=Oswald:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --dark:#0e2e2e;          /* deep green */
+    --darker:#0a2424;
+    --teal:#34cabf;          /* bright teal */
+    --teal-dim:#1f8a83;
+    --orange:#e8821e;        /* accent letters */
+    --orange-deep:#c9690f;
+    --cream:#eef2ec;
+    --stripe-gap: 34px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--dark);
+    color:var(--teal);
+    font-family:'Oswald',sans-serif;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ===== global vertical stripe texture ===== */
+  .stripes{
+    position:fixed;inset:0;z-index:0;pointer-events:none;
+    background:repeating-linear-gradient(
+      90deg,
+      var(--darker) 0,
+      var(--darker) calc(var(--stripe-gap) - 12px),
+      var(--teal-dim) calc(var(--stripe-gap) - 12px),
+      var(--teal-dim) var(--stripe-gap)
+    );
+    opacity:.18;
+  }
+
+  /* ===== opening curtain reveal ===== */
+  #curtain{
+    position:fixed;inset:0;z-index:200;display:flex;pointer-events:none;
+  }
+  #curtain .slat{
+    flex:1;background:var(--teal);
+    transform-origin:top;
+    animation:dropSlat .9s cubic-bezier(.7,0,.3,1) forwards;
+  }
+  #curtain .slat:nth-child(odd){background:var(--darker)}
+  #curtain .slat:nth-child(1){animation-delay:.05s}
+  #curtain .slat:nth-child(2){animation-delay:.13s}
+  #curtain .slat:nth-child(3){animation-delay:.21s}
+  #curtain .slat:nth-child(4){animation-delay:.29s}
+  #curtain .slat:nth-child(5){animation-delay:.37s}
+  #curtain .slat:nth-child(6){animation-delay:.45s}
+  #curtain .slat:nth-child(7){animation-delay:.53s}
+  #curtain .slat:nth-child(8){animation-delay:.61s}
+  @keyframes dropSlat{to{transform:scaleY(0)}}
+
+  /* ===== nav ===== */
+  nav{
+    position:fixed;top:0;left:0;right:0;z-index:50;
+    display:flex;justify-content:space-between;align-items:center;
+    padding:22px 38px;mix-blend-mode:difference;
+  }
+  nav .mark{font-family:'Bricolage Grotesque';font-weight:800;letter-spacing:.18em;color:var(--cream);font-size:18px}
+  nav .badge{font-size:11px;letter-spacing:.32em;color:var(--cream);text-transform:uppercase}
+
+  section{position:relative;z-index:1}
+
+  /* ===== HERO ===== */
+  .hero{
+    min-height:100vh;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;text-align:center;
+    padding:120px 20px 60px;position:relative;
+  }
+  .eyebrow{
+    font-size:12px;letter-spacing:.42em;text-transform:uppercase;
+    color:var(--orange);margin-bottom:8px;
+    opacity:0;animation:fadeUp .8s ease .9s forwards;
+  }
+  .sub-it{
+    font-size:13px;letter-spacing:.38em;text-transform:uppercase;color:var(--teal);
+    margin-bottom:26px;opacity:0;animation:fadeUp .8s ease 1.05s forwards;
+  }
+  .logo{
+    font-family:'Bricolage Grotesque',sans-serif;font-weight:800;
+    font-size:clamp(68px,17vw,200px);line-height:.85;letter-spacing:.02em;
+    color:var(--orange);
+    text-shadow:
+      4px 0 0 var(--orange-deep),
+      4px 4px 0 var(--orange-deep),
+      0 0 0 var(--teal);
+    -webkit-text-stroke:3px var(--darker);
+    paint-order:stroke fill;
+    position:relative;
+  }
+  .logo span{
+    display:inline-block;opacity:0;transform:translateY(40px) rotate(-6deg);
+    animation:letterIn .7s cubic-bezier(.2,.9,.3,1.4) forwards;
+  }
+  .logo span:nth-child(1){animation-delay:1.0s}
+  .logo span:nth-child(2){animation-delay:1.08s}
+  .logo span:nth-child(3){animation-delay:1.16s}
+  .logo span:nth-child(4){animation-delay:1.24s}
+  .logo span:nth-child(5){animation-delay:1.32s}
+  .logo span:nth-child(6){animation-delay:1.40s}
+  @keyframes letterIn{to{opacity:1;transform:translateY(0) rotate(0)}}
+
+  .script{
+    font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;
+    font-size:clamp(28px,5.5vw,56px);color:var(--teal);line-height:1.05;
+    margin:24px 0 6px;opacity:0;animation:fadeUp .9s ease 1.5s forwards;
+  }
+  .bio{
+    font-size:13px;letter-spacing:.34em;text-transform:uppercase;color:var(--cream);
+    opacity:0;animation:fadeUp .9s ease 1.65s forwards;
+  }
+  .origin{
+    margin-top:42px;font-size:12px;letter-spacing:.36em;text-transform:uppercase;
+    color:var(--teal);opacity:0;animation:fadeUp .9s ease 1.8s forwards;
+  }
+  .scrollcue{
+    position:absolute;bottom:26px;left:50%;transform:translateX(-50%);
+    font-size:10px;letter-spacing:.3em;color:var(--teal-dim);text-transform:uppercase;
+    opacity:0;animation:fadeUp 1s ease 2.1s forwards;
+  }
+  .scrollcue::after{content:'';display:block;width:1px;height:34px;margin:10px auto 0;
+    background:var(--teal);animation:cuePulse 1.6s ease-in-out infinite}
+  @keyframes cuePulse{0%,100%{transform:scaleY(.4);opacity:.4}50%{transform:scaleY(1);opacity:1}}
+
+  @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+
+  /* ===== floating TIN ===== */
+  .tin-wrap{display:flex;justify-content:center;margin:30px 0 10px;perspective:900px}
+  .tin{
+    width:130px;height:220px;border-radius:10px 10px 6px 6px;position:relative;
+    background:var(--darker);
+    box-shadow:0 40px 60px -20px rgba(0,0,0,.6), inset 0 0 0 2px var(--teal-dim);
+    overflow:hidden;animation:floaty 5s ease-in-out infinite;
+    transform-style:preserve-3d;
+  }
+  .tin::before{
+    content:'';position:absolute;inset:0;
+    background:repeating-linear-gradient(90deg,transparent 0,transparent 12px,var(--teal-dim) 12px,var(--teal-dim) 18px);
+    opacity:.5;
+  }
+  .tin .cap{position:absolute;top:0;left:50%;transform:translateX(-50%);width:46px;height:14px;background:var(--teal);border-radius:0 0 6px 6px}
+  .tin .lbl{position:absolute;top:48%;left:50%;transform:translate(-50%,-50%);font-family:'Bricolage Grotesque';font-weight:800;color:var(--orange);font-size:22px;letter-spacing:.05em;-webkit-text-stroke:1.4px var(--darker);paint-order:stroke fill}
+  .tin .lbl small{display:block;font-family:'Cormorant Garamond';font-style:italic;font-weight:600;color:var(--teal);font-size:11px;-webkit-text-stroke:0;margin-top:4px;letter-spacing:0}
+  @keyframes floaty{0%,100%{transform:translateY(0) rotateY(-8deg)}50%{transform:translateY(-16px) rotateY(8deg)}}
+
+  /* ===== reveal-on-scroll ===== */
+  .reveal{opacity:0;transform:translateY(50px);transition:opacity .9s ease,transform .9s cubic-bezier(.2,.8,.2,1)}
+  .reveal.in{opacity:1;transform:none}
+
+  /* ===== story band ===== */
+  .band{padding:140px 8vw;max-width:1100px;margin:0 auto}
+  .band h2{
+    font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;
+    font-size:clamp(34px,6vw,72px);color:var(--teal);line-height:1.02;margin-bottom:30px;
+  }
+  .band h2 .o{color:var(--orange)}
+  .band p{font-family:'Oswald';font-weight:500;font-size:clamp(15px,1.6vw,19px);
+    line-height:1.9;color:var(--cream);max-width:560px;letter-spacing:.02em}
+  .pill{display:inline-block;border:1px solid var(--teal-dim);color:var(--teal);
+    font-size:11px;letter-spacing:.32em;text-transform:uppercase;padding:8px 18px;border-radius:30px;margin-bottom:26px}
+
+  /* ===== spec grid ===== */
+  .specs{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:2px;
+    background:var(--teal-dim);border:1px solid var(--teal-dim);margin:0 auto;max-width:1100px}
+  .spec{background:var(--dark);padding:46px 30px;text-align:center;transition:background .4s}
+  .spec:hover{background:var(--darker)}
+  .spec .num{font-family:'Bricolage Grotesque';font-weight:800;font-size:46px;color:var(--orange);line-height:1}
+  .spec .cap{margin-top:14px;font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--teal)}
+
+  /* ===== marquee ===== */
+  .marquee{overflow:hidden;white-space:nowrap;border-top:1px solid var(--teal-dim);border-bottom:1px solid var(--teal-dim);padding:24px 0;margin:120px 0}
+  .marquee .track{display:inline-block;animation:scrollX 22s linear infinite}
+  .marquee span{font-family:'Bricolage Grotesque';font-weight:800;font-size:42px;letter-spacing:.04em;color:var(--teal);margin:0 30px;-webkit-text-stroke:1px var(--darker)}
+  .marquee span.o{color:var(--orange)}
+  @keyframes scrollX{to{transform:translateX(-50%)}}
+
+  /* ===== CTA ===== */
+  .cta{text-align:center;padding:120px 20px 160px}
+  .cta h3{font-family:'Bricolage Grotesque';font-weight:800;font-size:clamp(40px,8vw,90px);color:var(--orange);-webkit-text-stroke:3px var(--darker);paint-order:stroke fill;line-height:.9;margin-bottom:34px}
+  .btn{display:inline-block;background:var(--teal);color:var(--darker);font-family:'Oswald';font-weight:600;letter-spacing:.2em;text-transform:uppercase;font-size:14px;padding:18px 46px;border-radius:40px;text-decoration:none;transition:transform .3s,box-shadow .3s}
+  .btn:hover{transform:translateY(-4px);box-shadow:0 18px 30px -12px rgba(52,202,191,.6)}
+  footer{text-align:center;padding:40px 20px 60px;font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--teal-dim);position:relative;z-index:1}
+</style>
+</head>
+<body>
+
+<div class="stripes"></div>
+
+<div id="curtain">
+  <div class="slat"></div><div class="slat"></div><div class="slat"></div><div class="slat"></div>
+  <div class="slat"></div><div class="slat"></div><div class="slat"></div><div class="slat"></div>
+</div>
+
+<nav>
+  <div class="mark">ELAION</div>
+  <div class="badge">Edizione Limitata</div>
+</nav>
+
+<section class="hero">
+  <div class="eyebrow">Edizione Limitata</div>
+  <div class="sub-it">100% Italiano</div>
+  <h1 class="logo"><span>E</span><span>L</span><span>A</span><span>I</span><span>O</span><span>N</span></h1>
+  <div class="script">Olio Extra<br>Vergine d'Oliva</div>
+  <div class="bio">Biologico</div>
+  <div class="origin">Roccella Ionica (RC)</div>
+  <div class="scrollcue">Scorri</div>
+</section>
+
+<div class="tin-wrap">
+  <div class="tin">
+    <div class="cap"></div>
+    <div class="lbl">ELAION<small>extra vergine</small></div>
+  </div>
+</div>
+
+<section class="band reveal">
+  <span class="pill">La Latta</span>
+  <h2>Dalla <span class="o">Calabria</span><br>alla tua tavola.</h2>
+  <p>Olive raccolte a mano nelle colline di Roccella Ionica, frante a freddo entro poche ore. Una latta da edizione limitata che protegge l'olio dalla luce e ne custodisce l'intensità — verde, erbaceo, con quel finale pepato che riconosci al primo assaggio.</p>
+</section>
+
+<section class="specs reveal">
+  <div class="spec"><div class="num">100%</div><div class="cap">Italiano</div></div>
+  <div class="spec"><div class="num">&lt;0.2</div><div class="cap">Acidità</div></div>
+  <div class="spec"><div class="num">24h</div><div class="cap">Spremitura a freddo</div></div>
+  <div class="spec"><div class="num">500</div><div class="cap">ml · latta</div></div>
+</section>
+
+<div class="marquee">
+  <div class="track">
+    <span>BIOLOGICO</span><span class="o">·</span><span>EXTRA VERGINE</span><span class="o">·</span><span>MADE IN ITALY</span><span class="o">·</span>
+    <span>BIOLOGICO</span><span class="o">·</span><span>EXTRA VERGINE</span><span class="o">·</span><span>MADE IN ITALY</span><span class="o">·</span>
+  </div>
+</div>
+
+<section class="band reveal" style="text-align:right;margin-left:auto">
+  <span class="pill">Il Gusto</span>
+  <h2>Verde. Vivo.<br><span class="o">Pepato.</span></h2>
+  <p style="margin-left:auto">Naso di carciofo e pomodoro verde, bocca rotonda che si chiude con un amaro nobile e un piccante deciso in gola — segno autentico di polifenoli freschi e di olive lavorate al punto giusto.</p>
+</section>
+
+<section class="cta reveal">
+  <h3>ASSAGGIALA</h3>
+  <a class="btn" href="#">Ordina la latta</a>
+</section>
+
+<footer>ELAION · Roccella Ionica (RC) · Edizione Limitata 2026</footer>
+
+<script>
+  // remove curtain after animation
+  window.addEventListener('load',()=>{setTimeout(()=>{const c=document.getElementById('curtain');if(c)c.remove();},1400)});
+
+  // scroll reveal
+  const io=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')});
+  },{threshold:.18});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  // subtle parallax on tin
+  const tin=document.querySelector('.tin');
+  window.addEventListener('scroll',()=>{
+    const y=window.scrollY;
+    if(tin)tin.style.transform=`translateY(${y*-0.04}px)`;
+  });
+</script>
+</body>
+</html>
