@@ -300,12 +300,13 @@
     .btrack{height:7px}
 
     /* ===== FINAL panel: marquee (top) + tagline/CTA (center) + data table (bottom) ===== */
-    .cta{min-height:100vh;min-height:100svh;padding:0 7vw 26px;justify-content:flex-start;text-align:center}
-    .cta>.marquee{order:-2;margin-top:54px}     /* full-bleed handled by base rule */
-    .cta>.pill{margin-top:auto}                  /* flexible space above the CTA group */
-    .cta>.specs{margin-top:auto;width:100%;max-width:440px} /* flexible space pushes table down */
-    .cta>.cta-foot{margin-top:18px}
-    .cta-mobile-mount{display:none}              /* contents now live directly in the CTA */
+    .cta{min-height:100vh;min-height:100svh;padding:0 7vw 30px;justify-content:flex-start;text-align:center}
+    .cta>.pill{display:none}                      /* "Il Gusto" removed on mobile */
+    .cta>.marquee{order:-2;margin-top:0}          /* pinned to the very top */
+    .cta>.cta-tagline{margin-top:auto}            /* flexible space above the CTA group */
+    .cta>.specs{margin-top:auto;width:100%;max-width:440px} /* flexible space pushes table to the bottom */
+    .cta>.cta-foot{margin-top:22px}
+    .cta-mobile-mount{display:none}               /* contents now live directly in the CTA */
     .marquee{padding:13px 0}
     .marquee .track{animation-duration:18s}
     .spec{padding:16px 12px}
@@ -331,7 +332,6 @@
     .btrack{height:6px}
     .cta h3{font-size:clamp(34px,12vw,56px);margin-bottom:14px}
     .cta-tagline{font-size:28px;margin-bottom:12px}
-    .cta>.marquee{margin-top:40px}
     .spec{padding:12px 10px}
     .spec .num{font-size:22px}
     .spec .cap{margin-top:6px;font-size:9px}
