@@ -256,33 +256,60 @@
 
   @media(max-width:760px){
     /* same block-by-block snap as desktop */
-    .studio{min-height:100vh;min-height:100svh;padding:84px 0 0;gap:18px;justify-content:center}
-    .studio>.label,.studio>.tins,.studio-body{padding-left:7vw;padding-right:7vw}
-    .tins{gap:14px}
-    .opt{transform:scale(.62)}
-    .opt:hover{transform:scale(.64)}
-    .opt.active{transform:scale(.74)}
-    .opt .name{margin-top:6px}
-    /* studio body: only description + value bars (specs moved to final panel) */
-    .studio-body{grid-template-columns:1fr;gap:22px;padding-top:22px}
-    .score{font-size:56px}
-    .cru{font-size:21px}
-    .pub{font-size:clamp(26px,7vw,34px);margin:2px 0 14px}
-    .quote{max-width:none;font-size:15px;line-height:1.55}
-    .sign{margin-top:12px}
-    .panel-data{gap:16px}
-    .bars{gap:11px}
-    .bar{grid-template-columns:78px 1fr;gap:12px}
+    /* STUDIO = one single screen: cans + title + score + description + bars */
+    .studio{
+      height:100svh;min-height:0;          /* hard-bound to one screen */
+      padding:74px 0 18px;gap:14px;
+      justify-content:flex-start;overflow:hidden;
+    }
+    .studio>.label{order:0;margin-top:2px}
+    .studio>.tins{order:1}
+    .studio-body{order:2}
+    .label{font-size:10px}
+    .tins{gap:12px}
+    /* shrink the actual tin box (scale alone keeps the original layout height) */
+    .opt{transform:none}
+    .opt:hover{transform:none}
+    .opt.active{transform:none}
+    .opt .tin{width:84px;height:142px}
+    .opt .tin .lbl{font-size:15px}
+    .opt .tin .lbl small{font-size:8px}
+    .opt .tin .cap{width:32px;height:10px}
+    .opt.active .tin{box-shadow:0 18px 30px -14px rgba(0,0,0,.6),inset 0 0 0 2px var(--t-stripe),0 0 0 2px var(--accent)}
+    .opt .name{margin-top:8px}
+    .opt.active .name{color:var(--teal)}
+    .studio>.tins{margin:0}
 
-    /* ===== final panel holds: tagline + CTA + marquee + data table ===== */
-    .cta{min-height:100vh;min-height:100svh;padding:80px 7vw}
-    .cta-mobile-mount{display:flex;flex-direction:column;gap:22px;width:100%;align-items:center;margin-top:30px}
+    /* body: description block then value bars, both compact, padded sides */
+    .studio-body{
+      grid-template-columns:1fr;gap:14px;padding:14px 7vw 0;
+      border-top:1px solid var(--teal-dim);width:100%;
+      align-content:start;overflow:hidden;
+    }
+    .score-row{margin-bottom:8px;gap:16px}
+    .score{font-size:46px}
+    .score-lab{font-size:12px}
+    .cru{font-size:18px;padding-top:2px}
+    .cru .yr{font-size:12px;margin-top:2px}
+    .pub{font-size:clamp(22px,6.5vw,30px);margin:2px 0 8px}
+    .quote{max-width:none;font-size:13.5px;line-height:1.45;
+      display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+    .sign{margin-top:8px;font-size:13px}
+    .panel-data{gap:12px}
+    .data-title{font-size:10px}
+    .bars{gap:9px}
+    .bar{grid-template-columns:74px 1fr;gap:12px}
+    .btrack{height:7px}
+
+    /* ===== FINAL panel = marquee + data table + tagline + CTA ===== */
+    .cta{min-height:100vh;min-height:100svh;padding:70px 7vw}
+    .cta-mobile-mount{display:flex;flex-direction:column;gap:20px;width:100%;align-items:center;margin-top:26px}
     .cta-mobile-mount .marquee{order:1}
     .cta-mobile-mount .specs{order:2;width:100%;max-width:420px}
     .marquee{padding:12px 0}
     .marquee .track{animation-duration:18s}
-    .spec{padding:18px 12px}
-    .spec .num{font-size:28px}
+    .spec{padding:16px 12px}
+    .spec .num{font-size:26px}
   }
   @media(prefers-reduced-motion:reduce){
     html{scroll-snap-type:none;scroll-behavior:auto}
@@ -290,20 +317,22 @@
     .marquee .track{animation:none}
   }
 
-  /* very short phones: compact both panels so each stays one screen */
-  @media(max-width:760px) and (max-height:740px){
-    .studio{gap:12px;padding-top:74px}
-    .opt{transform:scale(.52)}
-    .opt.active{transform:scale(.62)}
-    .studio-body{gap:14px;padding-top:14px}
-    .score{font-size:46px}
-    .pub{font-size:24px;margin-bottom:8px}
-    .quote{font-size:13px;line-height:1.45}
-    .bars{gap:8px}
-    .btrack{height:7px}
-    .cta h3{font-size:clamp(36px,12vw,60px);margin-bottom:20px}
-    .cta-tagline{font-size:30px;margin-bottom:16px}
-    .cta-mobile-mount{gap:16px;margin-top:20px}
+  /* very short phones: shrink the heavy bits further */
+  @media(max-width:760px) and (max-height:720px){
+    .studio{padding-top:60px;gap:8px}
+    .opt .tin{width:72px;height:122px}
+    .opt .tin .lbl{font-size:13px}
+    .opt .name{margin-top:5px;font-size:9px}
+    .studio-body{gap:9px;padding-top:9px}
+    .score{font-size:38px}
+    .pub{font-size:22px;margin-bottom:6px}
+    .quote{font-size:12.5px;line-height:1.4;-webkit-line-clamp:3}
+    .bars{gap:7px}
+    .btrack{height:6px}
+    .data-title{margin-bottom:0}
+    .cta h3{font-size:clamp(34px,12vw,56px);margin-bottom:18px}
+    .cta-tagline{font-size:28px;margin-bottom:14px}
+    .cta-mobile-mount{gap:14px;margin-top:18px}
     .spec{padding:12px 10px}
     .spec .num{font-size:22px}
     .spec .cap{margin-top:6px;font-size:9px}
