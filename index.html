@@ -259,32 +259,33 @@
     /* STUDIO = one single screen: cans + title + score + description + bars */
     .studio{
       height:100svh;min-height:0;          /* hard-bound to one screen */
-      padding:74px 0 18px;gap:14px;
-      justify-content:flex-start;overflow:hidden;
+      padding:72px 0 22px;gap:0;
+      justify-content:space-between;overflow:hidden;
     }
-    .studio>.label{order:0;margin-top:2px}
-    .studio>.tins{order:1}
-    .studio-body{order:2}
-    .label{font-size:10px}
-    .tins{gap:12px}
+    .studio>.label{order:0;margin:0;flex:0 0 auto}
+    .studio>.tins{order:1;flex:0 0 auto}
+    .studio-body{order:2;flex:1 1 auto}
+    .label{font-size:11px}
+    .tins{gap:12px;align-items:flex-start}
     /* shrink the actual tin box (scale alone keeps the original layout height) */
     .opt{transform:none}
     .opt:hover{transform:none}
     .opt.active{transform:none}
-    .opt .tin{width:84px;height:142px}
+    .opt .tin{width:86px;height:146px;animation-name:floatyMobile}
     .opt .tin .lbl{font-size:15px}
     .opt .tin .lbl small{font-size:8px}
     .opt .tin .cap{width:32px;height:10px}
     .opt.active .tin{box-shadow:0 18px 30px -14px rgba(0,0,0,.6),inset 0 0 0 2px var(--t-stripe),0 0 0 2px var(--accent)}
-    .opt .name{margin-top:8px}
+    .opt .name{margin-top:10px}
     .opt.active .name{color:var(--teal)}
+    .opt.active::after{bottom:-10px}
     .studio>.tins{margin:0}
 
     /* body: description block then value bars, both compact, padded sides */
     .studio-body{
-      grid-template-columns:1fr;gap:14px;padding:14px 7vw 0;
+      grid-template-columns:1fr;gap:14px;padding:18px 7vw 0;
       border-top:1px solid var(--teal-dim);width:100%;
-      align-content:start;overflow:hidden;
+      align-content:center;overflow:hidden;
     }
     .score-row{margin-bottom:8px;gap:16px}
     .score{font-size:46px}
@@ -301,12 +302,14 @@
     .bar{grid-template-columns:74px 1fr;gap:12px}
     .btrack{height:7px}
 
-    /* ===== FINAL panel = marquee + data table + tagline + CTA ===== */
-    .cta{min-height:100vh;min-height:100svh;padding:70px 7vw}
-    .cta-mobile-mount{display:flex;flex-direction:column;gap:20px;width:100%;align-items:center;margin-top:26px}
-    .cta-mobile-mount .marquee{order:1}
-    .cta-mobile-mount .specs{order:2;width:100%;max-width:420px}
-    .marquee{padding:12px 0}
+    /* ===== FINAL panel: marquee (top) + tagline/CTA (center) + data table (bottom) ===== */
+    .cta{min-height:100vh;min-height:100svh;padding:0 7vw 26px;justify-content:flex-start;text-align:center}
+    .cta>.marquee{order:-2;margin-top:54px}     /* full-bleed handled by base rule */
+    .cta>.pill{margin-top:auto}                  /* flexible space above the CTA group */
+    .cta>.specs{margin-top:auto;width:100%;max-width:440px} /* flexible space pushes table down */
+    .cta>.cta-foot{margin-top:18px}
+    .cta-mobile-mount{display:none}              /* contents now live directly in the CTA */
+    .marquee{padding:13px 0}
     .marquee .track{animation-duration:18s}
     .spec{padding:16px 12px}
     .spec .num{font-size:26px}
@@ -316,23 +319,25 @@
     .btrack i{transition:none}
     .marquee .track{animation:none}
   }
+  /* gentler float on mobile so cans don't rise into the title */
+  @keyframes floatyMobile{0%,100%{transform:translateY(0) rotateY(-6deg)}50%{transform:translateY(-7px) rotateY(6deg)}}
 
   /* very short phones: shrink the heavy bits further */
   @media(max-width:760px) and (max-height:720px){
-    .studio{padding-top:60px;gap:8px}
-    .opt .tin{width:72px;height:122px}
+    .studio{padding-top:58px}
+    .opt .tin{width:74px;height:126px}
     .opt .tin .lbl{font-size:13px}
-    .opt .name{margin-top:5px;font-size:9px}
-    .studio-body{gap:9px;padding-top:9px}
-    .score{font-size:38px}
+    .opt .name{margin-top:7px;font-size:9px}
+    .studio-body{gap:9px}
+    .score{font-size:40px}
     .pub{font-size:22px;margin-bottom:6px}
     .quote{font-size:12.5px;line-height:1.4;-webkit-line-clamp:3}
-    .bars{gap:7px}
+    .bars{gap:8px}
     .btrack{height:6px}
     .data-title{margin-bottom:0}
-    .cta h3{font-size:clamp(34px,12vw,56px);margin-bottom:18px}
-    .cta-tagline{font-size:28px;margin-bottom:14px}
-    .cta-mobile-mount{gap:14px;margin-top:18px}
+    .cta h3{font-size:clamp(34px,12vw,56px);margin-bottom:14px}
+    .cta-tagline{font-size:28px;margin-bottom:12px}
+    .cta>.marquee{margin-top:40px}
     .spec{padding:12px 10px}
     .spec .num{font-size:22px}
     .spec .cap{margin-top:6px;font-size:9px}
@@ -365,8 +370,8 @@
   .btn{display:inline-block;background:var(--teal);color:var(--darker);font-family:'Oswald';font-weight:600;letter-spacing:.2em;text-transform:uppercase;font-size:14px;padding:18px 46px;border-radius:40px;text-decoration:none;transition:transform .3s,box-shadow .3s}
   .btn:hover{transform:translateY(-4px);box-shadow:0 18px 30px -12px rgba(52,202,191,.6)}
   .cta-foot{margin-top:64px;font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--teal-dim)}
-  /* mobile-only mount: empty + hidden on desktop, populated by JS on phones */
-  .cta-mobile-mount{display:none}
+  /* mount is hidden only on desktop (min-width), so the mobile media query controls it on phones */
+  @media(min-width:761px){ .cta-mobile-mount{display:none} }
 </style>
 </head>
 <body>
@@ -599,14 +604,15 @@
   const marqueeEl=document.getElementById('marquee');
   const panelData=document.querySelector('.panel-data'); // desktop home of specs
   const studioEl=document.getElementById('studio');       // desktop home of marquee
-  const ctaMount=document.getElementById('ctaMount');     // mobile destination
+  const ctaEl=document.getElementById('cta');             // mobile destination
+  const ctaMount=document.getElementById('ctaMount');     // reference node (kept for spacing)
   const mq=window.matchMedia('(max-width:760px)');
 
   function placeBlocks(isMobile){
     if(isMobile){
-      // order in final panel: marquee first, then the data table
-      if(marqueeEl.parentElement!==ctaMount) ctaMount.appendChild(marqueeEl);
-      if(specsEl.parentElement!==ctaMount) ctaMount.appendChild(specsEl);
+      // marquee pinned to the very top of the final panel, specs near the bottom
+      if(marqueeEl.parentElement!==ctaEl) ctaEl.insertBefore(marqueeEl,ctaEl.firstChild);
+      if(specsEl.parentElement!==ctaEl) ctaEl.insertBefore(specsEl,document.querySelector('.cta-foot'));
     }else{
       // restore desktop positions
       if(specsEl.parentElement!==panelData) panelData.appendChild(specsEl);
@@ -614,7 +620,6 @@
     }
   }
   placeBlocks(mq.matches);
-  // matchMedia change (modern + legacy)
   if(mq.addEventListener) mq.addEventListener('change',e=>placeBlocks(e.matches));
   else mq.addListener(e=>placeBlocks(e.matches));
 
