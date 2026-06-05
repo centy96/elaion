@@ -255,30 +255,34 @@
     font-size:11px;letter-spacing:.32em;text-transform:uppercase;padding:8px 18px;border-radius:30px;margin-bottom:26px}
 
   @media(max-width:760px){
-    /* keep the same block-by-block snap as desktop */
+    /* same block-by-block snap as desktop */
     .studio{min-height:100vh;min-height:100svh;padding:84px 0 0;gap:18px;justify-content:center}
     .studio>.label,.studio>.tins,.studio-body{padding-left:7vw;padding-right:7vw}
     .tins{gap:14px}
-    .opt{transform:scale(.6)}
-    .opt:hover{transform:scale(.62)}
-    .opt.active{transform:scale(.72)}
+    .opt{transform:scale(.62)}
+    .opt:hover{transform:scale(.64)}
+    .opt.active{transform:scale(.74)}
     .opt .name{margin-top:6px}
-    /* stack description over data, compacted to fit one screen */
+    /* studio body: only description + value bars (specs moved to final panel) */
     .studio-body{grid-template-columns:1fr;gap:22px;padding-top:22px}
-    .score{font-size:54px}
-    .cru{font-size:20px}
-    .pub{font-size:clamp(24px,7vw,32px);margin:2px 0 12px}
-    .quote{max-width:none;font-size:14px;line-height:1.5}
-    .sign{margin-top:10px}
+    .score{font-size:56px}
+    .cru{font-size:21px}
+    .pub{font-size:clamp(26px,7vw,34px);margin:2px 0 14px}
+    .quote{max-width:none;font-size:15px;line-height:1.55}
+    .sign{margin-top:12px}
     .panel-data{gap:16px}
-    .bars{gap:9px}
-    .bar{grid-template-columns:72px 1fr;gap:10px}
-    .btrack{height:7px}
-    .spec{padding:16px 12px}
-    .spec .num{font-size:26px}
+    .bars{gap:11px}
+    .bar{grid-template-columns:78px 1fr;gap:12px}
+
+    /* ===== final panel holds: tagline + CTA + marquee + data table ===== */
+    .cta{min-height:100vh;min-height:100svh;padding:80px 7vw}
+    .cta-mobile-mount{display:flex;flex-direction:column;gap:22px;width:100%;align-items:center;margin-top:30px}
+    .cta-mobile-mount .marquee{order:1}
+    .cta-mobile-mount .specs{order:2;width:100%;max-width:420px}
     .marquee{padding:12px 0}
     .marquee .track{animation-duration:18s}
-    .cta{min-height:100vh;min-height:100svh}
+    .spec{padding:18px 12px}
+    .spec .num{font-size:28px}
   }
   @media(prefers-reduced-motion:reduce){
     html{scroll-snap-type:none;scroll-behavior:auto}
@@ -286,17 +290,20 @@
     .marquee .track{animation:none}
   }
 
-  /* very short phone screens: shrink studio further so it stays one screen */
-  @media(max-width:760px) and (max-height:720px){
+  /* very short phones: compact both panels so each stays one screen */
+  @media(max-width:760px) and (max-height:740px){
     .studio{gap:12px;padding-top:74px}
-    .opt{transform:scale(.5)}
-    .opt.active{transform:scale(.6)}
-    .studio-body{gap:16px;padding-top:16px}
-    .score{font-size:44px}
-    .pub{font-size:22px;margin-bottom:8px}
+    .opt{transform:scale(.52)}
+    .opt.active{transform:scale(.62)}
+    .studio-body{gap:14px;padding-top:14px}
+    .score{font-size:46px}
+    .pub{font-size:24px;margin-bottom:8px}
     .quote{font-size:13px;line-height:1.45}
-    .bars{gap:7px}
-    .btrack{height:6px}
+    .bars{gap:8px}
+    .btrack{height:7px}
+    .cta h3{font-size:clamp(36px,12vw,60px);margin-bottom:20px}
+    .cta-tagline{font-size:30px;margin-bottom:16px}
+    .cta-mobile-mount{gap:16px;margin-top:20px}
     .spec{padding:12px 10px}
     .spec .num{font-size:22px}
     .spec .cap{margin-top:6px;font-size:9px}
@@ -329,6 +336,8 @@
   .btn{display:inline-block;background:var(--teal);color:var(--darker);font-family:'Oswald';font-weight:600;letter-spacing:.2em;text-transform:uppercase;font-size:14px;padding:18px 46px;border-radius:40px;text-decoration:none;transition:transform .3s,box-shadow .3s}
   .btn:hover{transform:translateY(-4px);box-shadow:0 18px 30px -12px rgba(52,202,191,.6)}
   .cta-foot{margin-top:64px;font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--teal-dim)}
+  /* mobile-only mount: empty + hidden on desktop, populated by JS on phones */
+  .cta-mobile-mount{display:none}
 </style>
 </head>
 <body>
@@ -409,7 +418,7 @@
         <div class="bar"><span class="bk">Agrumato</span><span class="btrack"><i data-key="agrumato"></i></span></div>
         <div class="bar"><span class="bk">Intensità</span><span class="btrack"><i data-key="intensita"></i></span></div>
       </div>
-      <div class="specs">
+      <div class="specs" id="specs">
         <div class="spec"><div class="num">100%</div><div class="cap">Italiano</div></div>
         <div class="spec"><div class="num" id="sAcid">&lt;0.2</div><div class="cap">Acidità</div></div>
         <div class="spec"><div class="num" id="sPoly">320</div><div class="cap">mg/kg polifenoli</div></div>
@@ -418,8 +427,8 @@
     </div>
   </div>
 
-  <!-- rotating Made-in-Italy strip, now part of the studio under the data -->
-  <div class="marquee">
+  <!-- rotating Made-in-Italy strip; on mobile it moves into the final panel -->
+  <div class="marquee" id="marquee">
     <div class="track">
       <span>BIOLOGICO</span><span class="o">·</span><span>EXTRA&nbsp;VERGINE</span><span class="o">·</span><span>MADE&nbsp;IN&nbsp;ITALY</span><span class="o">·</span><span>BIOLOGICO</span><span class="o">·</span><span>EXTRA&nbsp;VERGINE</span><span class="o">·</span><span>MADE&nbsp;IN&nbsp;ITALY</span><span class="o">·</span>
     </div>
@@ -429,11 +438,12 @@
   </div>
 </section>
 
-<section class="cta reveal">
+<section class="cta reveal" id="cta">
   <span class="pill">Il Gusto</span>
   <p class="cta-tagline">Verde. Vivo. <span class="o">Pepato.</span></p>
   <h3>ASSAGGIALA</h3>
   <a class="btn" href="#">Ordina la latta</a>
+  <div class="cta-mobile-mount" id="ctaMount"></div>
   <div class="cta-foot">ELAION · Roccella Ionica (RC) · Edizione Limitata 2026</div>
 </section>
 
@@ -554,6 +564,30 @@
     });
   },{threshold:.4});
   barObserver.observe(document.getElementById('studio'));
+
+  // ===== responsive layout: on mobile, move the marquee + specs into the final panel =====
+  const specsEl=document.getElementById('specs');
+  const marqueeEl=document.getElementById('marquee');
+  const panelData=document.querySelector('.panel-data'); // desktop home of specs
+  const studioEl=document.getElementById('studio');       // desktop home of marquee
+  const ctaMount=document.getElementById('ctaMount');     // mobile destination
+  const mq=window.matchMedia('(max-width:760px)');
+
+  function placeBlocks(isMobile){
+    if(isMobile){
+      // order in final panel: marquee first, then the data table
+      if(marqueeEl.parentElement!==ctaMount) ctaMount.appendChild(marqueeEl);
+      if(specsEl.parentElement!==ctaMount) ctaMount.appendChild(specsEl);
+    }else{
+      // restore desktop positions
+      if(specsEl.parentElement!==panelData) panelData.appendChild(specsEl);
+      if(marqueeEl.parentElement!==studioEl) studioEl.appendChild(marqueeEl);
+    }
+  }
+  placeBlocks(mq.matches);
+  // matchMedia change (modern + legacy)
+  if(mq.addEventListener) mq.addEventListener('change',e=>placeBlocks(e.matches));
+  else mq.addListener(e=>placeBlocks(e.matches));
 
 </script>
 </body>
